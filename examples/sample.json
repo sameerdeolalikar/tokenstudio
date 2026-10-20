@@ -1,0 +1,81 @@
+{
+  "version": 1,
+  "title": "Terracotta workspace",
+  "tokens": [
+    {
+      "name": "color.canvas",
+      "type": "color",
+      "value": "#f4f6fb"
+    },
+    {
+      "name": "color.surface",
+      "type": "color",
+      "value": "#ffffff"
+    },
+    {
+      "name": "color.ink",
+      "type": "color",
+      "value": "#24324b"
+    },
+    {
+      "name": "color.muted",
+      "type": "color",
+      "value": "#526079"
+    },
+    {
+      "name": "color.brand",
+      "type": "color",
+      "value": "#4f46e5"
+    },
+    {
+      "name": "color.onbrand",
+      "type": "color",
+      "value": "#ffffff"
+    },
+    {
+      "name": "color.border",
+      "type": "color",
+      "value": "#ccd2df"
+    },
+    {
+      "name": "color.focus",
+      "type": "color",
+      "value": "{color.brand}"
+    },
+    {
+      "name": "space.card",
+      "type": "dimension",
+      "value": "24px"
+    },
+    {
+      "name": "radius.card",
+      "type": "dimension",
+      "value": "16px"
+    },
+    {
+      "name": "type.body",
+      "type": "dimension",
+      "value": "16px"
+    }
+  ],
+  "pairs": [
+    {
+      "name": "Body text",
+      "foreground": "color.ink",
+      "background": "color.canvas",
+      "usage": "normal"
+    },
+    {
+      "name": "Secondary text",
+      "foreground": "color.muted",
+      "background": "color.surface",
+      "usage": "normal"
+    },
+    {
+      "name": "Primary action",
+      "foreground": "color.onbrand",
+      "background": "color.brand",
+      "usage": "normal"
+    }
+  ]
+}

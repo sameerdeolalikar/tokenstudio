@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>TokenStudio · Small decisions, a consistent system</title>
+    <link rel="stylesheet" href="/style.css" />
+    <script src="/app.js" defer></script>
+  </head>
+  <body>
+    <header>
+      <div class="brand">
+        <span class="logo" aria-hidden="true">◐</span>TokenStudio
+      </div>
+      <span class="pill">LOCAL DESIGN TOKEN WORKSHOP</span>
+    </header>
+    <main>
+      <div class="intro">
+        <div>
+          <p class="kicker">Edit the system. See the difference.</p>
+          <h1>Small decisions. A consistent system.</h1>
+          <p class="sub">
+            Shape a theme, follow its references, check text contrast, and
+            compare each change against a saved revision.
+          </p>
+        </div>
+        <div class="row">
+          <button id="sample">New sample theme</button
+          ><button id="save" class="primary">Save revision</button>
+        </div>
+      </div>
+      <div id="error" class="notice error" role="alert" hidden></div>
+      <div id="status" class="notice" role="status" hidden></div>
+      <div class="app">
+        <aside>
+          <section class="card stack">
+            <h2>Theme settings</h2>
+            <label>Theme name<input id="title" maxlength="100" /></label
+            ><span id="revision" class="muted">Unsaved theme</span
+            ><label
+              >Saved themes<select id="library">
+                <option value="">Select a theme</option>
+              </select></label
+            ><button id="open">Open theme</button>
+            <hr />
+            <label
+              >Compare against revision<select id="baseline">
+                <option value="sample">Original sample</option>
+              </select></label
+            ><button id="restore-baseline">Restore baseline as draft</button>
+            <p class="note">
+              Saving creates a new revision. The most recent 20 revisions are
+              retained locally; export JSON for a portable copy.
+            </p>
+          </section>
+          <section class="card stack">
+            <h2>Import & export</h2>
+            <label
+              >Import theme JSON<input
+                id="import"
+                type="file"
+                accept=".json" /></label
+            ><button id="export-css">Export resolved CSS</button
+            ><button id="export-json">Export theme JSON</button>
+            <p class="muted">
+              Opaque hex colors and pixel dimensions. Reference another token
+              with braces, such as {color.brand}.
+            </p>
+          </section>
+        </aside>
+        <div>
+          <div class="metrics">
+            <div class="metric">
+              <strong id="token-count">0</strong><span>Design tokens</span>
+            </div>
+            <div class="metric">
+              <strong id="alias-count">0</strong><span>Linked references</span>
+            </div>
+            <div class="metric">
+              <strong id="pass-count">0</strong
+              ><span>Contrast pairs passing AA</span>
+            </div>
+            <div class="metric">
+              <strong id="change-count">0</strong
+              ><span>Changes from baseline</span>
+            </div>
+          </div>
+          <section class="card">
+            <div class="heading">
+              <h2>01 / Component preview</h2>
+              <span id="validity" class="tag">Checking theme…</span>
+            </div>
+            <div class="preview-grid">
+              <div>
+                <h3>Baseline</h3>
+                <div id="baseline-preview" class="preview"></div>
+              </div>
+              <div>
+                <h3>Current draft</h3>
+                <div id="current-preview" class="preview"></div>
+              </div>
+            </div>
+            <p class="muted">
+              Preview roles: color.canvas, surface, ink, muted, brand, onbrand,
+              border; space.card, radius.card, type.body. Missing preview roles
+              use default values. Contrast results below refer only to your
+              configured pairs.
+            </p>
+          </section>
+          <section class="card">
+            <div class="heading">
+              <h2>02 / Token editor</h2>
+              <div class="row">
+                <button id="undo" disabled>Undo</button
+                ><button id="redo" disabled>Redo</button
+                ><button id="add-token">+ Add token</button>
+              </div>
+            </div>
+            <label
+              >Find tokens<input
+                id="search"
+                type="search"
+                placeholder="Search name or value…"
+            /></label>
+            <p class="muted">
+              Token name / type / value. Dotted lowercase names become CSS
+              custom properties.
+            </p>
+            <div
+              id="tokens"
+              class="scroll"
+              role="region"
+              aria-label="Token editor, scroll horizontally"
+              tabindex="0"
+            ></div>
+          </section>
+          <section class="card">
+            <div class="heading">
+              <h2>03 / Contrast pairs</h2>
+              <button id="add-pair">+ Add pair</button>
+            </div>
+            <div class="scroll">
+              <table class="editor-table">
+                <thead>
+                  <tr>
+                    <th>Pair name</th>
+                    <th>Foreground token</th>
+                    <th>Background token</th>
+                    <th>Text size</th>
+                    <th>Remove</th>
+                  </tr>
+                </thead>
+                <tbody id="pairs"></tbody>
+              </table>
+            </div>
+            <div class="scroll">
+              <table class="contrast-results">
+                <thead>
+                  <tr>
+                    <th>Pair</th>
+                    <th>Ratio</th>
+                    <th>AA threshold</th>
+                    <th>Result</th>
+                  </tr>
+                </thead>
+                <tbody id="checks"></tbody>
+              </table>
+            </div>
+            <p class="note">
+              WCAG text contrast: 4.5:1 for normal text, 3:1 for large text.
+              Decisions use unrounded ratios. This checks opaque color pairs,
+              not full page accessibility, images, transparency, or every
+              component state.
+            </p>
+          </section>
+          <section class="card">
+            <div class="heading">
+              <h2>04 / What changed?</h2>
+              <span class="tag">Raw values + resolved references</span>
+            </div>
+            <div class="scroll">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Token</th>
+                    <th>Change</th>
+                    <th>Baseline value</th>
+                    <th>Draft value</th>
+                  </tr>
+                </thead>
+                <tbody id="changes"></tbody>
+              </table>
+            </div>
+            <p id="diff-empty" class="empty">No changes from the baseline.</p>
+          </section>
+        </div>
+      </div>
+      <footer>
+        TokenStudio · TypeScript + Node.js · Local revision files · No external
+        fonts, uploads, or accounts.
+      </footer>
+    </main>
+  </body>
+</html>
