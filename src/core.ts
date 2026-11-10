@@ -52,14 +52,14 @@ export function parse(raw: unknown): Theme {
       !text(p.name) ||
       !text(p.foreground) ||
       !text(p.background) ||
-      !["normal", "large"].includes(String(p.usage))
+      (p.usage !== "normal" && p.usage !== "large")
     )
       throw new Error("Invalid contrast pair.");
     return {
       name: p.name,
       foreground: p.foreground,
       background: p.background,
-      usage: p.usage as Pair["usage"],
+      usage: p.usage,
     };
   });
   return { version: 1, title: raw.title.trim(), tokens, pairs };

@@ -41,7 +41,7 @@ Browser tests create synthetic saved records. Point `BASE_URL` at the test serve
 
 ## Scope and limitations
 
-Colors are opaque hexadecimal RGB values; dimensions are 0–128px. Limits are 100 tokens, 30 contrast pairs, 100 themes and 20 retained revisions per theme. Aliases must reference a token of the same type. Token names use lowercase dot-separated segments; CSS export converts dots to hyphens.
+Colors are opaque hexadecimal RGB values; dimensions are 0–128px. Limits are 100 tokens, 30 contrast pairs, 100 themes and 20 retained revisions per theme. Aliases must reference a token of the same type. Token names use lowercase dot-separated segments; CSS export converts dots to hyphens. Each contrast pair's `usage` must be the string `"normal"` or `"large"`; other values are rejected on import.
 
 Contrast checks use unrounded ratios and [WCAG text contrast thresholds](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html). They are not a complete accessibility audit and do not inspect actual text size, focus, semantics or non-text contrast. The preview uses a fixed set of token roles with defaults. This custom JSON schema does not claim design-token interchange standard compliance. Run one server process per data file; there is no interprocess lock.
 

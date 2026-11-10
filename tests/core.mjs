@@ -44,6 +44,18 @@ test("large text uses a distinct threshold", () => {
   t.pairs[0].usage = "large";
   assert.equal(analyze(t).checks[0].pass, true);
 });
+test("contrast usage rejects non-string and unsupported values", () => {
+  for (const usage of [
+    ["large"], ["normal"], [], {}, null, 0, true, "", "Large", "small",
+  ]) {
+    const t = theme();
+    t.pairs[0].usage = usage;
+    assert.throws(() => analyze(t), /Invalid contrast pair/);
+  }
+  const t = theme();
+  delete t.pairs[0].usage;
+  assert.throws(() => analyze(t), /Invalid contrast pair/);
+});
 test("aliases resolve through multiple links", () => {
   const t = theme();
   t.tokens.push({
