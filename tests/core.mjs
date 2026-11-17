@@ -130,3 +130,24 @@ test("revision persistence, stale writes and retained history", () => {
     rmSync(dir, { recursive: true, force: true });
   }
 });
+test("malformed project IDs cannot create themes or change the library", () => {
+  const dir = mkdtempSync(join(tmpdir(), "tokenstudio-test-"));
+  try {
+    const path = join(dir, "library.json"),
+      store = new Store(path);
+    store.save({ revision: 0, document: theme() });
+    store.save({ id: null, revision: 0, document: theme() });
+    const saved = store.list().map(({ id }) => store.get(id));
+    for (const id of [false, true, 0, 1, "", [], {}]) {
+      assert.throws(
+        () => store.save({ id, revision: 0, document: theme() }),
+        /Invalid project ID/,
+      );
+      assert.deepEqual(store.list().map(({ id }) => store.get(id)), saved);
+      const reopened = new Store(path);
+      assert.deepEqual(reopened.list().map(({ id }) => reopened.get(id)), saved);
+    }
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});

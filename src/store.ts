@@ -59,8 +59,9 @@ export class Store {
       throw new Error("Invalid revision.");
     let id: string;
     let history: Revision[] = [];
-    if (raw.id) {
-      if (typeof raw.id !== "string") throw new Error("Invalid project ID.");
+    if (raw.id !== undefined && raw.id !== null) {
+      if (typeof raw.id !== "string" || raw.id.length === 0)
+        throw new Error("Invalid project ID.");
       id = raw.id;
       const old = this.get(id);
       if (old.revision !== raw.revision)
